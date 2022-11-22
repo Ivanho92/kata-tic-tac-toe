@@ -7,7 +7,7 @@ import java.util.List;
 public interface GameDAO {
     List<Game> fetchAll();
 
-    Game fetchById(int id);
+    Game fetchById(String uuid);
 
     void save(Game entity);
 

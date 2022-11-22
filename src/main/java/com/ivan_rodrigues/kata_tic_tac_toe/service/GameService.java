@@ -7,7 +7,7 @@ import java.util.List;
 public interface GameService {
     List<Game> getAll();
 
-    Game getById(int id);
+    Game getById(String uuid);
 
     void save(Game entity);
 
