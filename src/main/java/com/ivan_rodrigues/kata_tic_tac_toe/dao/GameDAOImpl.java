@@ -13,6 +13,7 @@ public class GameDAOImpl implements GameDAO {
     private List<Game> games = new ArrayList<>();
 
     public GameDAOImpl() {
+        this.games.add(new Game("04511a48-0607-41b7-9254-313ebf88693c", "Player 1", "Player 2"));
         this.games.add(new Game("Ivan", "Elise"));
         this.games.add(new Game("John Doe", "Janne Doe"));
     }

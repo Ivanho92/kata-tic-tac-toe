@@ -1,8 +1,16 @@
 package com.ivan_rodrigues.kata_tic_tac_toe.model;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.UUID;
 
 public class Game {
+
+    public enum Status {
+        NEW,
+        ONGOING,
+        FINISHED
+    }
 
     private UUID uuid;
     private long createdOn;
@@ -11,9 +19,11 @@ public class Game {
     private String playerX;
     private String playerY;
 
-    private String status;
+    private Status status;
     private String nextPlayer;
+    private Board.FieldValue nextPlayerSymbol;
 
+    @Autowired
     private Board board;
 
     public Game(String playerX, String playerY) {
@@ -22,10 +32,16 @@ public class Game {
         this.updatedOn = System.currentTimeMillis();
         this.playerX = playerX;
         this.playerY = playerY;
-        this.status = "new";
-        this.nextPlayer = "X";
+        this.status = Status.NEW;
+        this.nextPlayer = playerX;
+        this.nextPlayerSymbol = Board.FieldValue.X;
 
         this.board = new Board();
+    }
+
+    public Game(String uuid, String playerX, String playerY) {
+        this(playerX, playerY);
+        this.uuid = UUID.fromString(uuid);
     }
 
     public UUID getUuid() {
@@ -52,11 +68,11 @@ public class Game {
         return playerY;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -68,7 +84,30 @@ public class Game {
         this.nextPlayer = nextPlayer;
     }
 
+    public Board.FieldValue getNextPlayerSymbol() {
+        return nextPlayerSymbol;
+    }
+
+    public void setNextPlayerSymbol(Board.FieldValue nextPlayerSymbol) {
+        this.nextPlayerSymbol = nextPlayerSymbol;
+    }
+
     public Board getBoard() {
         return board;
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "uuid=" + uuid +
+                ", createdOn=" + createdOn +
+                ", updatedOn=" + updatedOn +
+                ", playerX='" + playerX + '\'' +
+                ", playerY='" + playerY + '\'' +
+                ", status='" + status + '\'' +
+                ", nextPlayer='" + nextPlayer + '\'' +
+                ", nextPlayerSymbol='" + nextPlayerSymbol + '\'' +
+                ", board=" + board +
+                '}';
     }
 }

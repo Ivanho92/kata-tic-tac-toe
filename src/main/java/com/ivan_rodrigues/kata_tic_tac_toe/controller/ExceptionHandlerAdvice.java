@@ -1,5 +1,6 @@
 package com.ivan_rodrigues.kata_tic_tac_toe.controller;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,7 +21,16 @@ public class ExceptionHandlerAdvice {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity handleArgumentException(IllegalArgumentException error) {
+    public ResponseEntity handleIllegalArgumentException(IllegalArgumentException error) {
+        HashMap<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("status", "error");
+        errorResponse.put("message", error.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(InvalidFormatException.class)
+    public ResponseEntity handleNullPointerException(InvalidFormatException error) {
         HashMap<String, String> errorResponse = new HashMap<>();
         errorResponse.put("status", "error");
         errorResponse.put("message", error.getMessage());

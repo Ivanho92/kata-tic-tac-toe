@@ -1,6 +1,7 @@
 package com.ivan_rodrigues.kata_tic_tac_toe.controller;
 
 import com.ivan_rodrigues.kata_tic_tac_toe.model.Game;
+import com.ivan_rodrigues.kata_tic_tac_toe.model.PlayMove;
 import com.ivan_rodrigues.kata_tic_tac_toe.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,5 +27,11 @@ public class GameController {
     public Game getGameById(@PathVariable String uuid) {
         return gameService.getById(uuid);
     }
+
+    @PutMapping("/games/{uuid}/play")
+    public Game makePlayMove(@PathVariable String uuid, @RequestBody PlayMove playMove) {
+        return gameService.updateGameState(uuid, playMove);
+    }
+
 }
 
