@@ -1,5 +1,6 @@
 package com.ivan_rodrigues.kata_tic_tac_toe.dao;
 
+import com.ivan_rodrigues.kata_tic_tac_toe.model.Board;
 import com.ivan_rodrigues.kata_tic_tac_toe.model.Game;
 import org.springframework.stereotype.Repository;
 
@@ -38,6 +39,12 @@ public class GameDAOImpl implements GameDAO {
         return foundGame.get(0);
     }
 
+    @Override
+    public void updateGameState(Game game, String player, Board.Field field, Board.FieldSymbol symbol) {
+        game.getBoard().getFields().put(field, symbol);
+        game.setNextPlayerSymbol(symbol == Board.FieldSymbol.X ? Board.FieldSymbol.Y : Board.FieldSymbol.X);
+        game.setNextPlayer(game.getPlayerX().equals(player) ? game.getPlayerY() : game.getPlayerX());
+    }
 
     @Override
     public void save(Game entity) {

@@ -21,7 +21,7 @@ public class Game {
 
     private Status status;
     private String nextPlayer;
-    private Board.FieldValue nextPlayerSymbol;
+    private Board.FieldSymbol nextPlayerSymbol;
 
     @Autowired
     private Board board;
@@ -34,7 +34,7 @@ public class Game {
         this.playerY = playerY;
         this.status = Status.NEW;
         this.nextPlayer = playerX;
-        this.nextPlayerSymbol = Board.FieldValue.X;
+        this.nextPlayerSymbol = Board.FieldSymbol.X;
 
         this.board = new Board();
     }
@@ -84,11 +84,11 @@ public class Game {
         this.nextPlayer = nextPlayer;
     }
 
-    public Board.FieldValue getNextPlayerSymbol() {
+    public Board.FieldSymbol getNextPlayerSymbol() {
         return nextPlayerSymbol;
     }
 
-    public void setNextPlayerSymbol(Board.FieldValue nextPlayerSymbol) {
+    public void setNextPlayerSymbol(Board.FieldSymbol nextPlayerSymbol) {
         this.nextPlayerSymbol = nextPlayerSymbol;
     }
 

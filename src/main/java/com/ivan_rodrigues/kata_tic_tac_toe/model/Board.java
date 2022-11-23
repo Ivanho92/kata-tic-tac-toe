@@ -16,17 +16,17 @@ public class Board {
         C3
     }
 
-    public enum FieldValue {
+    public enum FieldSymbol {
         X,
         Y
     }
 
-    private HashMap<Field, String> fields;
+    private HashMap<Field, FieldSymbol> fields;
 
     public Board() {
         fields = new HashMap<>();
 
-        fields.put(Field.A1, "X");
+        fields.put(Field.A1, FieldSymbol.X);
         fields.put(Field.A2, null);
         fields.put(Field.A3, null);
         fields.put(Field.B1, null);
@@ -37,7 +37,7 @@ public class Board {
         fields.put(Field.C3, null);
     }
 
-    public HashMap<Field, String> getFields() {
+    public HashMap<Field, FieldSymbol> getFields() {
         return fields;
     }
 }
