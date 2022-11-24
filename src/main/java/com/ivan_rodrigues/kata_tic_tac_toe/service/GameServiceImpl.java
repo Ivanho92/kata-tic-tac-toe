@@ -26,45 +26,41 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game updateGameState(String uuid, PlayMove playMove) {
-        Game foundGame = gameDAO.fetchById(uuid);
-
+    public Game updateGameState(Game game, PlayMove playMove) {
+        Board.FieldSymbol activeSymbol = game.getNextPlayerSymbol();
         String activePlayer = playMove.getPlayer();
-        String nextPlayer = foundGame.getNextPlayer();
+        String nextPlayer = game.getNextPlayer();
 
         if (!activePlayer.equals(nextPlayer)) {
             throw new IllegalArgumentException("Wrong player! Next player to play is: " + nextPlayer);
         }
 
         Board.Field playedField = playMove.getField();
-        Board.FieldSymbol boardField = foundGame.getBoard().getFields().get(playedField);
+        Board.FieldSymbol boardField = game.getBoard().getFields().get(playedField);
 
         if (boardField != null) {
-            throw new IllegalArgumentException("Field " + playedField + " already occupied! (value = "+ boardField +")");
+            throw new IllegalArgumentException("Field " + playedField + " already occupied! (value = " + boardField + ")");
         }
 
-        gameDAO.updateGameState(foundGame, playMove.getPlayer(), playedField, foundGame.getNextPlayerSymbol());
+//        gameDAO.updateGameState(game, playMove.getPlayer(), playedField, game.getNextPlayerSymbol());
 
-        /*
+        // All verifications are passed, proceed with updating game state and meta data
+        game.setUpdatedOn(System.currentTimeMillis());
+        game.setStatus(Game.Status.ONGOING);
+        game.getBoard().getFields().put(playedField, activeSymbol);
+        game.setNextPlayerSymbol(activeSymbol == Board.FieldSymbol.X ? Board.FieldSymbol.O : Board.FieldSymbol.X);
+        game.setNextPlayer(game.getPlayerX().equals(activePlayer) ? game.getPlayerO() : game.getPlayerX());
 
-        // Check winning conditions
-        -- Horizontal wins --
-        0 : [0, 1, 2],
-        1 : [3, 4, 5],
-        2 : [6, 7, 8],
+        if(game.isGameFinished(game, activeSymbol)) {
+            if (game.getOutcome().equals(Game.Outcome.WIN)) {
+                game.setWinner(activePlayer);
+                System.out.println("Game over! Player " + activePlayer + " wins!");
+            } else {
+                System.out.println("Game over! It's a draw.");
+            }
+        };
 
-        -- Vertical wins --
-        3 : [0, 3, 6],
-        4 : [1, 4, 7],
-        5 : [2, 5, 8],
-
-        -- Diagonal wins --
-        6 : [0, 4, 8],
-        7 : [2, 4, 6]
-
-        */
-
-        return foundGame;
+        return game;
     }
 
     @Override

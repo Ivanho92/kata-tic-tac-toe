@@ -30,7 +30,8 @@ public class GameController {
 
     @PutMapping("/games/{uuid}/play")
     public Game makePlayMove(@PathVariable String uuid, @RequestBody PlayMove playMove) {
-        return gameService.updateGameState(uuid, playMove);
+        Game foundGame = gameService.getById(uuid);
+        return gameService.updateGameState(foundGame, playMove);
     }
 
 }

@@ -13,6 +13,4 @@ public interface GameDAO {
     void save(Game entity);
 
     void deleteById(int id);
-
-    void updateGameState(Game game, String activePlayer, Board.Field field, Board.FieldSymbol symbol);
 }

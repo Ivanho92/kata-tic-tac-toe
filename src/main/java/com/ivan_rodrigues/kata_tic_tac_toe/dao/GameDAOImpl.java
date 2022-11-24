@@ -39,12 +39,15 @@ public class GameDAOImpl implements GameDAO {
         return foundGame.get(0);
     }
 
-    @Override
-    public void updateGameState(Game game, String player, Board.Field field, Board.FieldSymbol symbol) {
-        game.getBoard().getFields().put(field, symbol);
-        game.setNextPlayerSymbol(symbol == Board.FieldSymbol.X ? Board.FieldSymbol.Y : Board.FieldSymbol.X);
-        game.setNextPlayer(game.getPlayerX().equals(player) ? game.getPlayerY() : game.getPlayerX());
-    }
+//    @Override
+//    public void updateGameState(Game game, String player, Board.Field field, Board.FieldSymbol symbol) {
+//        game.setUpdatedOn(System.currentTimeMillis());
+//        game.setStatus(Game.Status.ONGOING);
+//
+//        game.getBoard().getFields().put(field, symbol);
+//        game.setNextPlayerSymbol(symbol == Board.FieldSymbol.X ? Board.FieldSymbol.O : Board.FieldSymbol.X);
+//        game.setNextPlayer(game.getPlayerX().equals(player) ? game.getPlayerO() : game.getPlayerX());
+//    }
 
     @Override
     public void save(Game entity) {

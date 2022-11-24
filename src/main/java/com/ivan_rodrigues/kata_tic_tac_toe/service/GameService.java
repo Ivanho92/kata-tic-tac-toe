@@ -10,7 +10,7 @@ public interface GameService {
 
     Game getById(String uuid);
 
-    Game updateGameState(String uuid, PlayMove playMove);
+    Game updateGameState(Game game, PlayMove playMove);
 
     void save(Game entity);
 
