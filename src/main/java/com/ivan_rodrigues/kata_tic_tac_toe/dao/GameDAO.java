@@ -10,7 +10,7 @@ public interface GameDAO {
 
     Game fetchById(String uuid);
 
-    void save(Game entity);
+    Game save(Game game);
 
     void deleteById(int id);
 }

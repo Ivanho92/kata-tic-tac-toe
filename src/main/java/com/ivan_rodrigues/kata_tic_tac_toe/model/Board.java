@@ -26,15 +26,19 @@ public class Board {
     public Board() {
         fields = new HashMap<>();
 
-        fields.put(Field.A1, FieldSymbol.X);
-        fields.put(Field.A2, FieldSymbol.X);
+        fields.put(Field.A1, null);
+        fields.put(Field.A2, null);
         fields.put(Field.A3, null);
-        fields.put(Field.B1, FieldSymbol.O);
-        fields.put(Field.B2, FieldSymbol.O);
+        fields.put(Field.B1, null);
+        fields.put(Field.B2, null);
         fields.put(Field.B3, null);
-        fields.put(Field.C1, FieldSymbol.X);
-        fields.put(Field.C2, FieldSymbol.O);
-        fields.put(Field.C3, FieldSymbol.O);
+        fields.put(Field.C1, null);
+        fields.put(Field.C2, null);
+        fields.put(Field.C3, null);
+    }
+
+    public Board(HashMap<Board.Field, Board.FieldSymbol> fields) {
+        this.fields = fields;
     }
 
     public HashMap<Field, FieldSymbol> getFields() {

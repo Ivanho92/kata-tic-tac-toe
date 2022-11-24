@@ -1,5 +1,6 @@
 package com.ivan_rodrigues.kata_tic_tac_toe.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
@@ -36,8 +37,12 @@ public class Game {
     private long createdOn;
     private long updatedOn;
 
+    @JsonProperty("playerX")
     private String playerX;
+
+    @JsonProperty("playerY")
     private String playerO;
+
     private String winner;
 
     private Status status;
@@ -48,6 +53,8 @@ public class Game {
 
     @Autowired
     private Board board;
+
+//    public Game() {}
 
     public Game(String playerX, String playerO) {
         this.uuid = UUID.randomUUID();
@@ -67,9 +74,14 @@ public class Game {
         this.board = new Board();
     }
 
-    public Game(String uuid, String playerX, String playerY) {
-        this(playerX, playerY);
+    public Game(String uuid, String playerX, String playerO) {
+        this(playerX, playerO);
         this.uuid = UUID.fromString(uuid);
+    }
+
+    public Game(String playerX, String playerO, Board board) {
+        this(playerX, playerO);
+        this.board = board;
     }
 
     public UUID getUuid() {
@@ -94,6 +106,14 @@ public class Game {
 
     public String getPlayerO() {
         return playerO;
+    }
+
+    public void setPlayerX(String playerX) {
+        this.playerX = playerX;
+    }
+
+    public void setPlayerO(String playerO) {
+        this.playerO = playerO;
     }
 
     public Status getStatus() {

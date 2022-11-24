@@ -3,6 +3,7 @@ package com.ivan_rodrigues.kata_tic_tac_toe.service;
 import com.ivan_rodrigues.kata_tic_tac_toe.dao.GameDAO;
 import com.ivan_rodrigues.kata_tic_tac_toe.model.Board;
 import com.ivan_rodrigues.kata_tic_tac_toe.model.Game;
+import com.ivan_rodrigues.kata_tic_tac_toe.model.NewGame;
 import com.ivan_rodrigues.kata_tic_tac_toe.model.PlayMove;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,8 +65,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void save(Game entity) {
-
+    public Game create(Game game) {
+        return gameDAO.save(game);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.ivan_rodrigues.kata_tic_tac_toe.service;
 
 import com.ivan_rodrigues.kata_tic_tac_toe.model.Game;
+import com.ivan_rodrigues.kata_tic_tac_toe.model.NewGame;
 import com.ivan_rodrigues.kata_tic_tac_toe.model.PlayMove;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface GameService {
 
     Game updateGameState(Game game, PlayMove playMove);
 
-    void save(Game entity);
+    Game create(Game game);
 
     void deleteById(int id);
 }

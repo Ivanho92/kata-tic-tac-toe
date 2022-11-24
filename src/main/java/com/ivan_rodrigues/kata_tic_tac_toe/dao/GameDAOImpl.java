@@ -50,8 +50,9 @@ public class GameDAOImpl implements GameDAO {
 //    }
 
     @Override
-    public void save(Game entity) {
-
+    public Game save(Game game) {
+        games.add(game);
+        return game;
     }
 
     @Override
