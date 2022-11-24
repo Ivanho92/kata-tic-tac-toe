@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -36,9 +37,12 @@ public class GameController {
 
     @PutMapping("/games/{uuid}/play")
     public Game makePlayMove(@PathVariable String uuid, @RequestBody PlayMove playMove) {
-        Game foundGame = gameService.getById(uuid);
-        return gameService.updateGameState(foundGame, playMove);
+        return gameService.updateGameState(gameService.getById(uuid), playMove);
     }
 
+    @DeleteMapping("/games/{uuid}")
+    public ResponseEntity deleteGameById(@PathVariable String uuid) {
+        return gameService.deleteById(uuid);
+    }
 }
 

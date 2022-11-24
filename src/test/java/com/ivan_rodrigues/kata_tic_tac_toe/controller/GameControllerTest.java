@@ -11,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.HashMap;
@@ -19,7 +18,6 @@ import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -65,7 +63,27 @@ public class GameControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         String requestBody = mapper.writeValueAsString(new Game("John Doe", "Chuck Norris"));
 
-        this.mockMvc.perform(post("/api/games/").contentType(MediaType.APPLICATION_JSON).content(requestBody)).andDo(print()).andExpect(status().isOk());
+        this.mockMvc
+                .perform(post("/api/games/").contentType(MediaType.APPLICATION_JSON).content(requestBody))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("NEW"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.nextPlayerSymbol").value("X"));
+        ;
+    }
+
+    @Test
+    public void shouldDeleteAnExistingGame() throws Exception {
+        Game game = new Game("Bob", "Alice");
+        UUID uuid = game.getUuid();
+        gameService.create(game);
+
+        this.mockMvc
+                .perform(delete("/api/games/" + uuid))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("success"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("The game with id " + uuid + " has been successfully deleted!"));
     }
 
     @Test
@@ -89,7 +107,11 @@ public class GameControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         String requestBody = mapper.writeValueAsString(new PlayMove("Bob", Board.Field.A3));
 
-        this.mockMvc.perform(put("/api/games/" + uuid + "/play").contentType(MediaType.APPLICATION_JSON).content(requestBody)).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(put("/api/games/" + uuid + "/play").contentType(MediaType.APPLICATION_JSON).content(requestBody))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("ONGOING"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.nextPlayerSymbol").value("O"));
     }
 
     @Test
@@ -166,15 +188,15 @@ public class GameControllerTest {
         String requestBody_secondMove = mapper.writeValueAsString(new PlayMove("Player 2", Board.Field.C2));
 
         this.mockMvc.perform(
-                put("/api/games/" + uuid + "/play")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(requestBody_firstMove))
+                        put("/api/games/" + uuid + "/play")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestBody_firstMove))
                 .andExpect(status().is(200));
 
         this.mockMvc.perform(
-                put("/api/games/" + uuid + "/play")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody_secondMove))
+                        put("/api/games/" + uuid + "/play")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestBody_secondMove))
                 .andDo(print())
                 .andExpect(status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("FINISHED"))

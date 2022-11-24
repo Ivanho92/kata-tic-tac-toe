@@ -11,12 +11,10 @@ import java.util.stream.Collectors;
 
 @Repository
 public class GameDAOImpl implements GameDAO {
-    private List<Game> games = new ArrayList<>();
+    private List<Game> games;
 
     public GameDAOImpl() {
-        this.games.add(new Game("04511a48-0607-41b7-9254-313ebf88693c", "Player 1", "Player 2"));
-        this.games.add(new Game("Ivan", "Elise"));
-        this.games.add(new Game("John Doe", "Janne Doe"));
+        this.games = new ArrayList<>();
     }
 
     @Override
@@ -39,16 +37,6 @@ public class GameDAOImpl implements GameDAO {
         return foundGame.get(0);
     }
 
-//    @Override
-//    public void updateGameState(Game game, String player, Board.Field field, Board.FieldSymbol symbol) {
-//        game.setUpdatedOn(System.currentTimeMillis());
-//        game.setStatus(Game.Status.ONGOING);
-//
-//        game.getBoard().getFields().put(field, symbol);
-//        game.setNextPlayerSymbol(symbol == Board.FieldSymbol.X ? Board.FieldSymbol.O : Board.FieldSymbol.X);
-//        game.setNextPlayer(game.getPlayerX().equals(player) ? game.getPlayerO() : game.getPlayerX());
-//    }
-
     @Override
     public Game save(Game game) {
         games.add(game);
@@ -56,7 +44,8 @@ public class GameDAOImpl implements GameDAO {
     }
 
     @Override
-    public void deleteById(int id) {
-
+    public boolean deleteById(String uuid) {
+        games.remove(fetchById(uuid));
+        return true;
     }
 }

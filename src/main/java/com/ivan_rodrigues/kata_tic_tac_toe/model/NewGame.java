@@ -13,15 +13,7 @@ public class NewGame {
         return playerX;
     }
 
-    public void setPlayerX(String playerX) {
-        this.playerX = playerX;
-    }
-
     public String getPlayerO() {
         return playerO;
-    }
-
-    public void setPlayerO(String playerO) {
-        this.playerO = playerO;
     }
 }

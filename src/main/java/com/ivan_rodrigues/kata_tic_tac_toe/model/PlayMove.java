@@ -13,15 +13,7 @@ public class PlayMove {
         return player;
     }
 
-    public void setPlayer(String player) {
-        this.player = player;
-    }
-
     public Board.Field getField() {
         return field;
-    }
-
-    public void setField(Board.Field field) {
-        this.field = field;
     }
 }

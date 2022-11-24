@@ -4,6 +4,7 @@ import com.ivan_rodrigues.kata_tic_tac_toe.model.Board;
 import com.ivan_rodrigues.kata_tic_tac_toe.model.Game;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface GameDAO {
     List<Game> fetchAll();
@@ -12,5 +13,5 @@ public interface GameDAO {
 
     Game save(Game game);
 
-    void deleteById(int id);
+    boolean deleteById(String uuid);
 }

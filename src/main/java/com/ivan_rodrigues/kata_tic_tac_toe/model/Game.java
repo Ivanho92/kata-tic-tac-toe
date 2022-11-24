@@ -1,6 +1,5 @@
 package com.ivan_rodrigues.kata_tic_tac_toe.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
@@ -22,40 +21,25 @@ public class Game {
             {Board.Field.A3, Board.Field.B2, Board.Field.C1},
     };
 
-    public enum Status {
-        NEW,
-        ONGOING,
-        FINISHED
-    }
+    public enum Status {NEW, ONGOING, FINISHED}
 
-    public enum Outcome {
-        WIN,
-        DRAW,
-    }
+    public enum Outcome {WIN, DRAW}
 
     private UUID uuid;
     private long createdOn;
     private long updatedOn;
-
-    @JsonProperty("playerX")
     private String playerX;
-
-    @JsonProperty("playerY")
     private String playerO;
-
     private String winner;
-
     private Status status;
     private String nextPlayer;
     private Board.FieldSymbol nextPlayerSymbol;
-
     private Outcome outcome;
 
     @Autowired
     private Board board;
 
-//    public Game() {}
-
+    // Constructors
     public Game(String playerX, String playerO) {
         this.uuid = UUID.randomUUID();
         this.createdOn = System.currentTimeMillis();
@@ -74,92 +58,12 @@ public class Game {
         this.board = new Board();
     }
 
-    public Game(String uuid, String playerX, String playerO) {
-        this(playerX, playerO);
-        this.uuid = UUID.fromString(uuid);
-    }
-
     public Game(String playerX, String playerO, Board board) {
         this(playerX, playerO);
         this.board = board;
     }
 
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public long getCreatedOn() {
-        return createdOn;
-    }
-
-    public long getUpdatedOn() {
-        return updatedOn;
-    }
-
-    public void setUpdatedOn(long updatedOn) {
-        this.updatedOn = updatedOn;
-    }
-
-    public String getPlayerX() {
-        return playerX;
-    }
-
-    public String getPlayerO() {
-        return playerO;
-    }
-
-    public void setPlayerX(String playerX) {
-        this.playerX = playerX;
-    }
-
-    public void setPlayerO(String playerO) {
-        this.playerO = playerO;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public String getNextPlayer() {
-        return nextPlayer;
-    }
-
-    public void setNextPlayer(String nextPlayer) {
-        this.nextPlayer = nextPlayer;
-    }
-
-    public Board.FieldSymbol getNextPlayerSymbol() {
-        return nextPlayerSymbol;
-    }
-
-    public void setNextPlayerSymbol(Board.FieldSymbol nextPlayerSymbol) {
-        this.nextPlayerSymbol = nextPlayerSymbol;
-    }
-
-    public Board getBoard() {
-        return board;
-    }
-
-    public Outcome getOutcome() {
-        return outcome;
-    }
-
-    public void setOutcome(Outcome outcome) {
-        this.outcome = outcome;
-    }
-
-    public String getWinner() {
-        return winner;
-    }
-
-    public void setWinner(String winner) {
-        this.winner = winner;
-    }
-
+    // Logic methods
     public boolean isGameFinished(Game game, Board.FieldSymbol activeSymbol) {
         HashMap<Board.Field, Board.FieldSymbol> fields = game.getBoard().getFields();
 
@@ -211,18 +115,92 @@ public class Game {
         return false;
     }
 
-    @Override
-    public String toString() {
-        return "Game{" +
-                "uuid=" + uuid +
-                ", createdOn=" + createdOn +
-                ", updatedOn=" + updatedOn +
-                ", playerX='" + playerX + '\'' +
-                ", playerO='" + playerO + '\'' +
-                ", status='" + status + '\'' +
-                ", nextPlayer='" + nextPlayer + '\'' +
-                ", nextPlayerSymbol='" + nextPlayerSymbol + '\'' +
-                ", board=" + board +
-                '}';
+    // Getters and setters
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public long getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(long createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public long getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(long updatedOn) {
+        this.updatedOn = updatedOn;
+    }
+
+    public String getPlayerX() {
+        return playerX;
+    }
+
+    public void setPlayerX(String playerX) {
+        this.playerX = playerX;
+    }
+
+    public String getPlayerO() {
+        return playerO;
+    }
+
+    public void setPlayerO(String playerO) {
+        this.playerO = playerO;
+    }
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getNextPlayer() {
+        return nextPlayer;
+    }
+
+    public void setNextPlayer(String nextPlayer) {
+        this.nextPlayer = nextPlayer;
+    }
+
+    public Board.FieldSymbol getNextPlayerSymbol() {
+        return nextPlayerSymbol;
+    }
+
+    public void setNextPlayerSymbol(Board.FieldSymbol nextPlayerSymbol) {
+        this.nextPlayerSymbol = nextPlayerSymbol;
+    }
+
+    public Outcome getOutcome() {
+        return outcome;
+    }
+
+    public void setOutcome(Outcome outcome) {
+        this.outcome = outcome;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 }
