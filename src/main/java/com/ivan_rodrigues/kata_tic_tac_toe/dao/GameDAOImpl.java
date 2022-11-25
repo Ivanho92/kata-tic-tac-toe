@@ -1,7 +1,6 @@
 package com.ivan_rodrigues.kata_tic_tac_toe.dao;
 
-import com.ivan_rodrigues.kata_tic_tac_toe.model.Board;
-import com.ivan_rodrigues.kata_tic_tac_toe.model.Game;
+import com.ivan_rodrigues.kata_tic_tac_toe.model.data.Game;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

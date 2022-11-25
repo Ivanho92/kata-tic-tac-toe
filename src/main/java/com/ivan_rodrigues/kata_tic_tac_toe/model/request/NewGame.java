@@ -1,7 +1,13 @@
-package com.ivan_rodrigues.kata_tic_tac_toe.model;
+package com.ivan_rodrigues.kata_tic_tac_toe.model.request;
+
+import javax.validation.constraints.NotBlank;
 
 public class NewGame {
+
+    @NotBlank
     private String playerX;
+
+    @NotBlank
     private String playerO;
 
     public NewGame(String playerX, String playerO) {

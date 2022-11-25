@@ -1,12 +1,10 @@
 package com.ivan_rodrigues.kata_tic_tac_toe.service;
 
-import com.ivan_rodrigues.kata_tic_tac_toe.model.Game;
-import com.ivan_rodrigues.kata_tic_tac_toe.model.NewGame;
-import com.ivan_rodrigues.kata_tic_tac_toe.model.PlayMove;
-import org.springframework.http.ResponseEntity;
+import com.ivan_rodrigues.kata_tic_tac_toe.model.data.Board;
+import com.ivan_rodrigues.kata_tic_tac_toe.model.data.Game;
+import com.ivan_rodrigues.kata_tic_tac_toe.model.request.PlayMove;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface GameService {
     List<Game> getAll();
@@ -17,5 +15,7 @@ public interface GameService {
 
     Game create(Game game);
 
-    ResponseEntity deleteById(String uuid);
+    boolean deleteById(String uuid);
+
+    boolean isGameFinished(Game game, Board.FieldSymbol activeSymbol, String activePlayer);
 }

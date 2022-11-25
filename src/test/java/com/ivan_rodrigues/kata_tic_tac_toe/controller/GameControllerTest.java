@@ -1,9 +1,9 @@
 package com.ivan_rodrigues.kata_tic_tac_toe.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ivan_rodrigues.kata_tic_tac_toe.model.Board;
-import com.ivan_rodrigues.kata_tic_tac_toe.model.Game;
-import com.ivan_rodrigues.kata_tic_tac_toe.model.PlayMove;
+import com.ivan_rodrigues.kata_tic_tac_toe.model.data.Board;
+import com.ivan_rodrigues.kata_tic_tac_toe.model.data.Game;
+import com.ivan_rodrigues.kata_tic_tac_toe.model.request.PlayMove;
 import com.ivan_rodrigues.kata_tic_tac_toe.service.GameService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
