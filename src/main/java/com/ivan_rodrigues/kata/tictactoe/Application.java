@@ -1,4 +1,4 @@
-package com.ivan_rodrigues.kata_tic_tac_toe;
+package com.ivan_rodrigues.kata.tictactoe;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

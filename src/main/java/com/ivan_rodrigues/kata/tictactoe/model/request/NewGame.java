@@ -1,4 +1,4 @@
-package com.ivan_rodrigues.kata_tic_tac_toe.model.request;
+package com.ivan_rodrigues.kata.tictactoe.model.request;
 
 import javax.validation.constraints.NotBlank;
 

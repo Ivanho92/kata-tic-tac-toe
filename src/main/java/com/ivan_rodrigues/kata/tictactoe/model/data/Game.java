@@ -1,12 +1,12 @@
-package com.ivan_rodrigues.kata_tic_tac_toe.model.data;
+package com.ivan_rodrigues.kata.tictactoe.model.data;
 
-import java.util.*;
+import com.ivan_rodrigues.kata.tictactoe.model.data.enums.BoardFieldSymbol;
+import com.ivan_rodrigues.kata.tictactoe.model.data.enums.GameOutcome;
+import com.ivan_rodrigues.kata.tictactoe.model.data.enums.GameStatus;
+
+import java.util.UUID;
 
 public class Game {
-    // Enumerations
-    public enum Status {NEW, ONGOING, FINISHED}
-    public enum Outcome {WIN, DRAW}
-
     // Properties
     private UUID uuid;
     private long createdOn;
@@ -14,10 +14,10 @@ public class Game {
     private String playerX;
     private String playerO;
     private String winner;
-    private Status status;
+    private GameStatus status;
     private String nextPlayer;
-    private Board.FieldSymbol nextPlayerSymbol;
-    private Outcome outcome;
+    private BoardFieldSymbol nextPlayerSymbol;
+    private GameOutcome outcome;
     private Board board;
 
     // Constructors
@@ -25,17 +25,13 @@ public class Game {
         this.uuid = UUID.randomUUID();
         this.createdOn = System.currentTimeMillis();
         this.updatedOn = System.currentTimeMillis();
-
         this.playerX = playerX;
         this.playerO = playerO;
         this.winner = null;
-
-        this.status = Status.NEW;
+        this.status = GameStatus.NEW;
         this.nextPlayer = playerX;
-        this.nextPlayerSymbol = Board.FieldSymbol.X;
-
+        this.nextPlayerSymbol = BoardFieldSymbol.X;
         this.outcome = null;
-
         this.board = new Board();
     }
 
@@ -93,11 +89,11 @@ public class Game {
         this.winner = winner;
     }
 
-    public Status getStatus() {
+    public GameStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(GameStatus status) {
         this.status = status;
     }
 
@@ -109,19 +105,19 @@ public class Game {
         this.nextPlayer = nextPlayer;
     }
 
-    public Board.FieldSymbol getNextPlayerSymbol() {
+    public BoardFieldSymbol getNextPlayerSymbol() {
         return nextPlayerSymbol;
     }
 
-    public void setNextPlayerSymbol(Board.FieldSymbol nextPlayerSymbol) {
+    public void setNextPlayerSymbol(BoardFieldSymbol nextPlayerSymbol) {
         this.nextPlayerSymbol = nextPlayerSymbol;
     }
 
-    public Outcome getOutcome() {
+    public GameOutcome getOutcome() {
         return outcome;
     }
 
-    public void setOutcome(Outcome outcome) {
+    public void setOutcome(GameOutcome outcome) {
         this.outcome = outcome;
     }
 
@@ -131,5 +127,22 @@ public class Game {
 
     public void setBoard(Board board) {
         this.board = board;
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "uuid=" + uuid +
+                ", createdOn=" + createdOn +
+                ", updatedOn=" + updatedOn +
+                ", playerX='" + playerX + '\'' +
+                ", playerO='" + playerO + '\'' +
+                ", winner='" + winner + '\'' +
+                ", status=" + status +
+                ", nextPlayer='" + nextPlayer + '\'' +
+                ", nextPlayerSymbol=" + nextPlayerSymbol +
+                ", outcome=" + outcome +
+                ", board=" + board +
+                '}';
     }
 }

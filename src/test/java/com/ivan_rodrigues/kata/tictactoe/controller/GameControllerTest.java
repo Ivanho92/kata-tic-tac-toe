@@ -1,10 +1,15 @@
-package com.ivan_rodrigues.kata_tic_tac_toe.controller;
+package com.ivan_rodrigues.kata.tictactoe.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ivan_rodrigues.kata_tic_tac_toe.model.data.Board;
-import com.ivan_rodrigues.kata_tic_tac_toe.model.data.Game;
-import com.ivan_rodrigues.kata_tic_tac_toe.model.request.PlayMove;
-import com.ivan_rodrigues.kata_tic_tac_toe.service.GameService;
+import com.ivan_rodrigues.kata.tictactoe.exception.ForbiddenException;
+import com.ivan_rodrigues.kata.tictactoe.model.data.Board;
+import com.ivan_rodrigues.kata.tictactoe.model.data.Game;
+import com.ivan_rodrigues.kata.tictactoe.model.data.enums.BoardField;
+import com.ivan_rodrigues.kata.tictactoe.model.data.enums.BoardFieldSymbol;
+import com.ivan_rodrigues.kata.tictactoe.model.request.PlayMove;
+import com.ivan_rodrigues.kata.tictactoe.service.GameService;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,10 +17,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,21 +38,50 @@ public class GameControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+//    @BeforeEach
+//    public void cleanGames() throws Exception {
+//        List<Game> games = gameService.getAll();
+//
+//        for (Game game : games) {
+//            gameService.deleteById(game.getUuid().toString());
+//        }
+//    }
+
     @Test
     public void shouldReturnAllGames() throws Exception {
-        this.mockMvc.perform(get("/api/games")).andDo(print()).andExpect(status().isOk());
+        Game game1 = new Game("Bob", "Alice", new Board());
+        Game game2 = new Game("Julien", "Ivan", new Board());
+        Game game3 = new Game("Quentin", "Elise", new Board());
+
+        gameService.create(game1);
+        gameService.create(game2);
+        gameService.create(game3);
+
+        this.mockMvc.perform(get("/api/games"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$", is(not(empty()))));
     }
 
     @Test
     public void shouldReturnOneGame() throws Exception {
-        String id = "04511a48-0607-41b7-9254-313ebf88693c";
-        this.mockMvc.perform(get("/api/games/" + id)).andDo(print()).andExpect(status().isOk());
+        Game game = new Game("Bob", "Alice", new Board());
+        UUID uuid = game.getUuid();
+
+        gameService.create(game);
+
+        this.mockMvc.perform(get("/api/games/" + uuid))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.uuid").value(uuid.toString()));
     }
 
     @Test
     public void shouldReturnNoGame_notFound_CorrectIDFormat() throws Exception {
         String id = "04511a48-0607-41b7-9254-313ebf88693d";
-        this.mockMvc.perform(get("/api/games/" + id)).andDo(print()).andExpect(status().isOk());
+        this.mockMvc.perform(get("/api/games/" + id))
+                .andDo(print())
+                .andExpect(status().is(404));
     }
 
     @Test
@@ -53,8 +90,8 @@ public class GameControllerTest {
         this.mockMvc.perform(
                         get("/api/games/" + id))
                 .andDo(print())
-                .andExpect(status().is(400))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Invalid UUID string: " + id));
+                .andExpect(status().is(400));
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Invalid UUID string: " + id));
     }
 
     @Test
@@ -81,23 +118,21 @@ public class GameControllerTest {
         this.mockMvc
                 .perform(delete("/api/games/" + uuid))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value("success"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("The game with id " + uuid + " has been successfully deleted!"));
+                .andExpect(status().is(204));
     }
 
     @Test
     public void shouldUpdateGame_validMove_ongoing() throws Exception {
-        HashMap<Board.Field, Board.FieldSymbol> fields = new HashMap<>();
-        fields.put(Board.Field.A1, Board.FieldSymbol.X);
-        fields.put(Board.Field.A2, Board.FieldSymbol.O);
-        fields.put(Board.Field.A3, null);
-        fields.put(Board.Field.B1, null);
-        fields.put(Board.Field.B2, null);
-        fields.put(Board.Field.B3, null);
-        fields.put(Board.Field.C1, null);
-        fields.put(Board.Field.C2, null);
-        fields.put(Board.Field.C3, null);
+        HashMap<BoardField, BoardFieldSymbol> fields = new HashMap<>();
+        fields.put(BoardField.A1, BoardFieldSymbol.X);
+        fields.put(BoardField.A2, BoardFieldSymbol.O);
+        fields.put(BoardField.A3, null);
+        fields.put(BoardField.B1, null);
+        fields.put(BoardField.B2, null);
+        fields.put(BoardField.B3, null);
+        fields.put(BoardField.C1, null);
+        fields.put(BoardField.C2, null);
+        fields.put(BoardField.C3, null);
 
         Game game = new Game("Bob", "Alice", new Board(fields));
         UUID uuid = game.getUuid();
@@ -105,7 +140,7 @@ public class GameControllerTest {
         gameService.create(game);
 
         ObjectMapper mapper = new ObjectMapper();
-        String requestBody = mapper.writeValueAsString(new PlayMove("Bob", Board.Field.A3));
+        String requestBody = mapper.writeValueAsString(new PlayMove("Bob", BoardField.A3));
 
         this.mockMvc.perform(put("/api/games/" + uuid + "/play").contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andDo(print())
@@ -115,17 +150,18 @@ public class GameControllerTest {
     }
 
     @Test
+    @ExceptionHandler({ForbiddenException.class})
     public void shouldNotUpdateGame_notValidMove_fieldAlreadyOccupied() throws Exception {
-        HashMap<Board.Field, Board.FieldSymbol> fields = new HashMap<>();
-        fields.put(Board.Field.A1, Board.FieldSymbol.X);
-        fields.put(Board.Field.A2, Board.FieldSymbol.O);
-        fields.put(Board.Field.A3, null);
-        fields.put(Board.Field.B1, null);
-        fields.put(Board.Field.B2, null);
-        fields.put(Board.Field.B3, null);
-        fields.put(Board.Field.C1, null);
-        fields.put(Board.Field.C2, null);
-        fields.put(Board.Field.C3, null);
+        HashMap<BoardField, BoardFieldSymbol> fields = new HashMap<>();
+        fields.put(BoardField.A1, BoardFieldSymbol.X);
+        fields.put(BoardField.A2, BoardFieldSymbol.O);
+        fields.put(BoardField.A3, null);
+        fields.put(BoardField.B1, null);
+        fields.put(BoardField.B2, null);
+        fields.put(BoardField.B3, null);
+        fields.put(BoardField.C1, null);
+        fields.put(BoardField.C2, null);
+        fields.put(BoardField.C3, null);
 
         Game game = new Game("Bob", "Alice", new Board(fields));
         UUID uuid = game.getUuid();
@@ -133,15 +169,15 @@ public class GameControllerTest {
         gameService.create(game);
 
         ObjectMapper mapper = new ObjectMapper();
-        String requestBody = mapper.writeValueAsString(new PlayMove("Bob", Board.Field.A2));
+        String requestBody = mapper.writeValueAsString(new PlayMove("Bob", BoardField.A2));
 
         this.mockMvc.perform(
                         put("/api/games/" + uuid + "/play")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(requestBody))
                 .andDo(print())
-                .andExpect(status().is(400))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Field A2 already occupied! (value = O)"));
+                .andExpect(status().is(403));
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Field A2 already occupied! (value = O)"));
     }
 
     @Test
@@ -153,30 +189,30 @@ public class GameControllerTest {
         gameService.create(game);
 
         ObjectMapper mapper = new ObjectMapper();
-        String requestBody = mapper.writeValueAsString(new PlayMove("Alice", Board.Field.A2));
+        String requestBody = mapper.writeValueAsString(new PlayMove("Alice", BoardField.A2));
 
         this.mockMvc.perform(
                         put("/api/games/" + uuid + "/play")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(requestBody))
                 .andDo(print())
-                .andExpect(status().is(400))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Wrong player! Next player to play is: Bob"));
+                .andExpect(status().is(403));
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Wrong player! Next player to play is: Bob"));
     }
 
     @Test
     public void shouldEndGame_draw() throws Exception {
 
-        HashMap<Board.Field, Board.FieldSymbol> fields = new HashMap<>();
-        fields.put(Board.Field.A1, Board.FieldSymbol.O);
-        fields.put(Board.Field.A2, Board.FieldSymbol.X);
-        fields.put(Board.Field.A3, Board.FieldSymbol.X);
-        fields.put(Board.Field.B1, Board.FieldSymbol.X);
-        fields.put(Board.Field.B2, Board.FieldSymbol.O);
-        fields.put(Board.Field.B3, Board.FieldSymbol.O);
-        fields.put(Board.Field.C1, Board.FieldSymbol.O);
-        fields.put(Board.Field.C2, null);
-        fields.put(Board.Field.C3, null);
+        HashMap<BoardField, BoardFieldSymbol> fields = new HashMap<>();
+        fields.put(BoardField.A1, BoardFieldSymbol.O);
+        fields.put(BoardField.A2, BoardFieldSymbol.X);
+        fields.put(BoardField.A3, BoardFieldSymbol.X);
+        fields.put(BoardField.B1, BoardFieldSymbol.X);
+        fields.put(BoardField.B2, BoardFieldSymbol.O);
+        fields.put(BoardField.B3, BoardFieldSymbol.O);
+        fields.put(BoardField.C1, BoardFieldSymbol.O);
+        fields.put(BoardField.C2, null);
+        fields.put(BoardField.C3, null);
 
         Game game = new Game("Player 1", "Player 2", new Board(fields));
         UUID uuid = game.getUuid();
@@ -184,8 +220,8 @@ public class GameControllerTest {
         gameService.create(game);
 
         ObjectMapper mapper = new ObjectMapper();
-        String requestBody_firstMove = mapper.writeValueAsString(new PlayMove("Player 1", Board.Field.C3));
-        String requestBody_secondMove = mapper.writeValueAsString(new PlayMove("Player 2", Board.Field.C2));
+        String requestBody_firstMove = mapper.writeValueAsString(new PlayMove("Player 1", BoardField.C3));
+        String requestBody_secondMove = mapper.writeValueAsString(new PlayMove("Player 2", BoardField.C2));
 
         this.mockMvc.perform(
                         put("/api/games/" + uuid + "/play")
@@ -206,16 +242,16 @@ public class GameControllerTest {
     @Test
     public void shouldEndGame_win() throws Exception {
 
-        HashMap<Board.Field, Board.FieldSymbol> fields = new HashMap<>();
-        fields.put(Board.Field.A1, Board.FieldSymbol.X);
-        fields.put(Board.Field.A2, null);
-        fields.put(Board.Field.A3, Board.FieldSymbol.O);
-        fields.put(Board.Field.B1, Board.FieldSymbol.O);
-        fields.put(Board.Field.B2, Board.FieldSymbol.O);
-        fields.put(Board.Field.B3, null);
-        fields.put(Board.Field.C1, null);
-        fields.put(Board.Field.C2, Board.FieldSymbol.X);
-        fields.put(Board.Field.C3, Board.FieldSymbol.X);
+        HashMap<BoardField, BoardFieldSymbol> fields = new HashMap<>();
+        fields.put(BoardField.A1, BoardFieldSymbol.X);
+        fields.put(BoardField.A2, null);
+        fields.put(BoardField.A3, BoardFieldSymbol.O);
+        fields.put(BoardField.B1, BoardFieldSymbol.O);
+        fields.put(BoardField.B2, BoardFieldSymbol.O);
+        fields.put(BoardField.B3, null);
+        fields.put(BoardField.C1, null);
+        fields.put(BoardField.C2, BoardFieldSymbol.X);
+        fields.put(BoardField.C3, BoardFieldSymbol.X);
 
         Game game = new Game("Player 1", "Player 2", new Board(fields));
         UUID uuid = game.getUuid();
@@ -223,7 +259,9 @@ public class GameControllerTest {
         gameService.create(game);
 
         ObjectMapper mapper = new ObjectMapper();
-        String requestBody = mapper.writeValueAsString(new PlayMove("Player 1", Board.Field.C1));
+        String requestBody = mapper.writeValueAsString(new PlayMove("Player 1", BoardField.C1));
+
+        System.out.println("game" + game);
 
         this.mockMvc.perform(
                         put("/api/games/" + uuid + "/play")
@@ -258,3 +296,5 @@ public class GameControllerTest {
 ////                .andExpect(content().string("{\"message\":\"Wrong player! Next player to play is: Bob\",\"status\":\"error\"}"));
 //    }
 }
+
+

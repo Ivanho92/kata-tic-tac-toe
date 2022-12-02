@@ -1,6 +1,6 @@
-package com.ivan_rodrigues.kata_tic_tac_toe.model.request;
+package com.ivan_rodrigues.kata.tictactoe.model.request;
 
-import com.ivan_rodrigues.kata_tic_tac_toe.model.data.Board;
+import com.ivan_rodrigues.kata.tictactoe.model.data.enums.BoardField;
 
 import javax.validation.constraints.NotBlank;
 
@@ -10,9 +10,9 @@ public class PlayMove {
     private String player;
 
     @NotBlank
-    private Board.Field field;
+    private BoardField field;
 
-    public PlayMove(String player, Board.Field field) {
+    public PlayMove(String player, BoardField field) {
         this.player = player;
         this.field = field;
     }
@@ -21,7 +21,7 @@ public class PlayMove {
         return player;
     }
 
-    public Board.Field getField() {
+    public BoardField getField() {
         return field;
     }
 }
