@@ -10,9 +10,11 @@
     <div class="container">
         <div class="stack">
             <h1>KATA BNP - TicTacToe</h1>
-            <small>By <a href="https://ivan-rodrigues.com" target="_blank">Ivan Rodrigues</a>. (Get the source code on <a href="https://github.com/Ivanho92/kata-tic-tac-toe" target="_blank">Github</a>)</small>
-            <p>This Restful API simulates a simple <a href="https://en.wikipedia.org/wiki/Tic-tac-toe" target="_blank">TicTacToe</a> game between two players.</p>
-            <pre>Given this game board
+            <small>By <a href="https://ivan-rodrigues.com" target="_blank">Ivan Rodrigues</a>. (Get the source code on
+                <a href="https://github.com/Ivanho92/kata-tic-tac-toe" target="_blank">Github</a>)</small>
+            <p>This Restful API simulates a simple <a href="https://en.wikipedia.org/wiki/Tic-tac-toe" target="_blank">TicTacToe</a>
+                game between two players.</p>
+            <pre><code>Given this game board
 
 +----+----+----+
 | A1 | A2 | A3 |
@@ -34,7 +36,7 @@ Then the board is now
 | C1 | C2 | C3 |
 +----+----+----+
 
-And it's not the end of game.</pre>
+And it's not the end of game.</code></pre>
             <hr>
         </div>
     </div>
@@ -98,7 +100,7 @@ And it's not the end of game.</pre>
 
             <div class="card | stack">
                 <h3>(C) Create a new game</h3>
-                <code>POST /api/games/{uuid}</code>
+                <code>POST /api/games</code>
                 <h4>Request Body <small>(application/json)</small></h4>
                 <pre><code>{
     "playerX": "Julien",
