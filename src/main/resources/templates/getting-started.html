@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KATA BNP - TicTacToe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="stack">
+            <h1>KATA BNP - TicTacToe</h1>
+            <small>By <a href="https://ivan-rodrigues.com" target="_blank">Ivan Rodrigues</a>. (Get the source code on <a href="https://github.com/Ivanho92/kata-tic-tac-toe" target="_blank">Github</a>)</small>
+            <p>This Restful API simulates a simple <a href="https://en.wikipedia.org/wiki/Tic-tac-toe" target="_blank">TicTacToe</a> game between two players.</p>
+            <pre>Given this game board
+
++----+----+----+
+| A1 | A2 | A3 |
++----+----+----+
+| B1 | B2 | B3 |
++----+----+----+
+| C1 | C2 | C3 |
++----+----+----+
+
+And it's the turn of player X
+When it plays on cell B2
+Then the board is now
+
++----+----+----+
+| A1 | A2 | A3 |
++----+----+----+
+| B1 |  X | B3 |
++----+----+----+
+| C1 | C2 | C3 |
++----+----+----+
+
+And it's not the end of game.</pre>
+            <hr>
+        </div>
+    </div>
+</header>
+
+
+<main>
+    <div class="container">
+        <div class="stack">
+            <h2>Installation</h2>
+
+            <p>Install the project by running the following command on your terminal:</p>
+            <code>git clone https://github.com/Ivanho92/kata-tic-tac-toe.git</code>
+
+            <p>Once installed, you can run the project by running:</p>
+            <code>./mvnw clean spring-boot:run</code>
+
+            <p>The project should now be running on your localhost server on <a href="http://localhost:8081"
+                                                                                target="_blank">http://localhost:8081</a>
+            </p>
+
+
+            <h2>Endpoints</h2>
+
+            <p>Most endpoints return a JSON representing a game and its state, as follow:</p>
+            <pre><code>{
+    "uuid": "fb010285-ba3f-4420-8a42-0e6178ca5058",
+    "createdOn": 1670246187555,
+    "updatedOn": 1670246418132,
+    "playerX": "Julien",
+    "playerO": "Ivan",
+    "winner": null,
+    "status": "ONGOING", // NEW, ONGOING, FINISHED
+    "nextPlayer": "Ivan",
+    "nextPlayerSymbol": "O",
+    "outcome": null, // WIN, DRAW
+    "board": {
+        "fields": {
+            "A2": "O",
+            "C1": "X",
+            "C3": null,
+            "C2": null,
+            "A1": "X",
+            "A3": null,
+            "B3": null,
+            "B1": null,
+            "B2": null
+        }
+    }
+}</code></pre>
+
+            <div class="card | stack">
+                <h3>(A) Get all games</h3>
+                <code>GET /api/games</code>
+            </div>
+
+            <div class="card | stack">
+                <h3>(B) Get a single game</h3>
+                <code>GET /api/games/{uuid}</code>
+            </div>
+
+            <div class="card | stack">
+                <h3>(C) Create a new game</h3>
+                <code>POST /api/games/{uuid}</code>
+                <h4>Request Body <small>(application/json)</small></h4>
+                <pre><code>{
+    "playerX": "Julien",
+    "playerO": "Ivan"
+}</code></pre>
+            </div>
+
+            <div class="card | stack">
+                <h3>(D) Play a move</h3>
+                <code>PUT /api/games/{uuid}/play</code>
+                <h4>Request Body <small>(application/json)</small></h4>
+                <pre><code>{
+    "player": "Ivan",
+    "field": "C1"
+}</code></pre>
+            </div>
+
+            <div class="card | stack">
+                <h3>(E) Delete a game</h3>
+                <code>DELETE /api/games/{uuid}</code>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+
+</body>
+</html>
