@@ -25,13 +25,16 @@ public class GameDAOImpl implements GameDAO {
 
     @Override
     public Game fetchById(String uuid) {
+        UUID id;
         List<Game> foundGame;
 
-        try  {
-            foundGame = games.stream().filter(g -> g.getUuid().equals(UUID.fromString(uuid))).collect(Collectors.toList());
+        try {
+            id = UUID.fromString(uuid);
         } catch (IllegalArgumentException exception) {
             throw new BadRequestException("Invalid UUID.");
         }
+
+        foundGame = games.stream().filter(g -> g.getUuid().equals(id)).collect(Collectors.toList());
 
         if (foundGame.size() > 1) {
             throw new InternalServerErrorException("Found " + foundGame.size() + " games with the same ID! (" + uuid + ").");

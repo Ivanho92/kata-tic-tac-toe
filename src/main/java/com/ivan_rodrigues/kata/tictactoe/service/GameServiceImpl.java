@@ -1,6 +1,7 @@
 package com.ivan_rodrigues.kata.tictactoe.service;
 
 import com.ivan_rodrigues.kata.tictactoe.dao.GameDAO;
+import com.ivan_rodrigues.kata.tictactoe.exception.BadRequestException;
 import com.ivan_rodrigues.kata.tictactoe.exception.ForbiddenException;
 import com.ivan_rodrigues.kata.tictactoe.exception.NotFoundException;
 import com.ivan_rodrigues.kata.tictactoe.model.data.enums.BoardField;
